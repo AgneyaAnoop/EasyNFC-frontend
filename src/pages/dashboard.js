@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import axios from 'axios';
@@ -31,9 +31,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchProfiles();
-  }, []);
+  }, [fetchProfiles]); 
 
-  const fetchProfiles = async () => {
+  const fetchProfiles = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -57,7 +57,7 @@ export default function Dashboard() {
         setLoading(false);
       }
     }
-  };
+  }, [router]);
 
   const switchProfile = async (index) => {
     try {

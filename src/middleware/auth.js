@@ -6,11 +6,15 @@ export function withAuth(Component) {
     const router = useRouter();
     
     useEffect(() => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        router.push('/login');
-      }
-    }, []);
+      const checkAuth = () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          router.push('/login');
+        }
+      };
+      
+      checkAuth();
+    }, [router]); // Added router to dependency array
 
     return <Component {...props} />;
   };
