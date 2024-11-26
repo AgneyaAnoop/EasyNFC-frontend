@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Link from 'next/link';
-import axios from 'axios';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import axios from "axios";
 import {
   Mail,
   Lock,
@@ -21,22 +21,22 @@ import {
   MessageCircle,
   Link as LinkIcon,
   ArrowLeft,
-  ArrowRight
-} from 'lucide-react';
+  ArrowRight,
+} from "lucide-react";
 
 export default function Register() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    name: '',
-    phoneNo: '',
-    about: '',
-    links: []
+    email: "",
+    password: "",
+    name: "",
+    phoneNo: "",
+    about: "",
+    links: [],
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -45,38 +45,38 @@ export default function Register() {
 
   const getPlaceholder = (platform) => {
     switch (platform?.toLowerCase()) {
-      case 'instagram':
-        return '@username or username';
-      case 'twitter':
-        return '@username or username';
-      case 'whatsapp':
-        return 'Phone number (with country code)';
-      case 'email':
-        return 'email@example.com';
-      case 'linkedin':
-        return 'Profile URL or username';
-      case 'website':
-        return 'https://your-website.com';
-      case 'custom':
-        return 'https://...';
+      case "instagram":
+        return "@username or username";
+      case "twitter":
+        return "@username or username";
+      case "whatsapp":
+        return "Phone number (with country code)";
+      case "email":
+        return "email@example.com";
+      case "linkedin":
+        return "Profile URL or username";
+      case "website":
+        return "https://your-website.com";
+      case "custom":
+        return "https://...";
       default:
-        return 'Enter value';
+        return "Enter value";
     }
   };
 
   const getLinkIcon = (platform) => {
     switch (platform?.toLowerCase()) {
-      case 'instagram':
+      case "instagram":
         return <Instagram className="h-5 w-5 text-pink-400" />;
-      case 'linkedin':
+      case "linkedin":
         return <Linkedin className="h-5 w-5 text-blue-400" />;
-      case 'twitter':
+      case "twitter":
         return <Twitter className="h-5 w-5 text-blue-300" />;
-      case 'whatsapp':
+      case "whatsapp":
         return <MessageCircle className="h-5 w-5 text-green-400" />;
-      case 'email':
+      case "email":
         return <Mail className="h-5 w-5 text-yellow-400" />;
-      case 'website':
+      case "website":
         return <Globe className="h-5 w-5 text-purple-400" />;
       default:
         return <LinkIcon className="h-5 w-5 text-gray-400" />;
@@ -84,25 +84,27 @@ export default function Register() {
   };
 
   const formatLinkValue = (platform, value) => {
-    if (!value) return '';
-    
+    if (!value) return "";
+
     value = value.trim();
     switch (platform?.toLowerCase()) {
-      case 'instagram':
-        value = value.replace('@', '');
+      case "instagram":
+        value = value.replace("@", "");
         return `https://instagram.com/${value}`;
-      case 'twitter':
-        value = value.replace('@', '');
+      case "twitter":
+        value = value.replace("@", "");
         return `https://twitter.com/${value}`;
-      case 'whatsapp':
-        value = value.replace('+', '').replace(/\D/g, '');
+      case "whatsapp":
+        value = value.replace("+", "").replace(/\D/g, "");
         return `https://wa.me/${value}`;
-      case 'email':
+      case "email":
         return `mailto:${value}`;
-      case 'linkedin':
-        return value.startsWith('http') ? value : `https://linkedin.com/in/${value}`;
+      case "linkedin":
+        return value.startsWith("http")
+          ? value
+          : `https://linkedin.com/in/${value}`;
       default:
-        return value.startsWith('http') ? value : `https://${value}`;
+        return value.startsWith("http") ? value : `https://${value}`;
     }
   };
 
@@ -120,8 +122,8 @@ export default function Register() {
       ...formData,
       links: [
         ...formData.links,
-        { platform: '', url: '', isCustom: false, customTitle: '' }
-      ]
+        { platform: "", url: "", isCustom: false, customTitle: "" },
+      ],
     });
   };
 
@@ -132,17 +134,17 @@ export default function Register() {
 
   const handleLinkChange = (index, field, value) => {
     const newLinks = [...formData.links];
-    if (field === 'platform' && value === 'custom') {
+    if (field === "platform" && value === "custom") {
       newLinks[index] = {
         ...newLinks[index],
         [field]: value,
-        isCustom: true
+        isCustom: true,
       };
     } else {
       newLinks[index] = {
         ...newLinks[index],
         [field]: value,
-        isCustom: newLinks[index].platform === 'custom'
+        isCustom: newLinks[index].platform === "custom",
       };
     }
     setFormData({ ...formData, links: newLinks });
@@ -150,17 +152,17 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
       // Format links before sending
       const formattedData = {
         ...formData,
-        links: formData.links.map(link => ({
+        links: formData.links.map((link) => ({
           ...link,
-          url: formatLinkValue(link.platform, link.url)
-        }))
+          url: formatLinkValue(link.platform, link.url),
+        })),
       };
 
       const response = await axios.post(
@@ -168,15 +170,17 @@ export default function Register() {
         formattedData,
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       );
 
-      localStorage.setItem('token', response.data.token);
-      router.push('/dashboard');
+      localStorage.setItem("token", response.data.token);
+      router.push("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register. Please try again.');
+      setError(
+        err.response?.data?.message || "Failed to register. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -185,7 +189,9 @@ export default function Register() {
   return (
     <>
       <Head>
-        <title>{step === 1 ? 'Create Account' : 'Add Your Links'} - EasyNFC</title>
+        <title>
+          {step === 1 ? "Create Account" : "Add Your Links"} - EasyNFC
+        </title>
         <meta name="description" content="Create your EasyNFC account" />
       </Head>
 
@@ -195,7 +201,7 @@ export default function Register() {
             <h1 className="text-3xl font-extrabold text-blue-400">EasyNFC</h1>
           </Link>
           <h2 className="mt-6 text-center text-2xl font-bold text-white">
-            {step === 1 ? 'Create your account' : 'Add your social links'}
+            {step === 1 ? "Create your account" : "Add your social links"}
           </h2>
         </div>
 
@@ -211,7 +217,10 @@ export default function Register() {
             {step === 1 ? (
               <form onSubmit={handleNext} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-200">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-200"
+                  >
                     Full Name
                   </label>
                   <div className="mt-1 relative">
@@ -232,7 +241,10 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-200">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-200"
+                  >
                     Email address
                   </label>
                   <div className="mt-1 relative">
@@ -254,7 +266,10 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-200">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-200"
+                  >
                     Password
                   </label>
                   <div className="mt-1 relative">
@@ -286,7 +301,10 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label htmlFor="phoneNo" className="block text-sm font-medium text-gray-200">
+                  <label
+                    htmlFor="phoneNo"
+                    className="block text-sm font-medium text-gray-200"
+                  >
                     Phone Number
                   </label>
                   <div className="mt-1 relative">
@@ -307,7 +325,10 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label htmlFor="about" className="block text-sm font-medium text-gray-200">
+                  <label
+                    htmlFor="about"
+                    className="block text-sm font-medium text-gray-200"
+                  >
                     About You
                   </label>
                   <div className="mt-1 relative">
@@ -341,7 +362,9 @@ export default function Register() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-medium text-white">Your Links</h3>
+                    <h3 className="text-lg font-medium text-white">
+                      Your Links
+                    </h3>
                     <button
                       type="button"
                       onClick={addLink}
@@ -353,11 +376,18 @@ export default function Register() {
                   </div>
 
                   {formData.links.map((link, index) => (
-                    <div key={index} className="bg-gray-700 p-4 rounded-lg space-y-4">
+                    <div
+                      key={index}
+                      className="bg-gray-700 p-4 rounded-lg space-y-4"
+                    >
                       <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-2">
-                          <span className="text-gray-300">{getLinkIcon(link.platform)}</span>
-                          <span className="text-sm text-gray-300">Link #{index + 1}</span>
+                          <span className="text-gray-300">
+                            {getLinkIcon(link.platform)}
+                          </span>
+                          <span className="text-sm text-gray-300">
+                            Link #{index + 1}
+                          </span>
                         </div>
                         <button
                           type="button"
@@ -372,7 +402,13 @@ export default function Register() {
                         <div>
                           <select
                             value={link.platform}
-                            onChange={(e) => handleLinkChange(index, 'platform', e.target.value)}
+                            onChange={(e) =>
+                              handleLinkChange(
+                                index,
+                                "platform",
+                                e.target.value
+                              )
+                            }
                             className="block w-full bg-gray-600 border border-gray-500 rounded-md text-white px-3 py-2"
                           >
                             <option value="">Select Platform</option>
@@ -388,9 +424,11 @@ export default function Register() {
 
                         <div>
                           <input
-                            type={link.platform === 'email' ? 'email' : 'text'}
+                            type={link.platform === "email" ? "email" : "text"}
                             value={link.url}
-                            onChange={(e) => handleLinkChange(index, 'url', e.target.value)}
+                            onChange={(e) =>
+                              handleLinkChange(index, "url", e.target.value)
+                            }
                             className="block w-full bg-gray-600 border border-gray-500 rounded-md text-white px-3 py-2"
                             placeholder={getPlaceholder(link.platform)}
                           />
@@ -401,7 +439,13 @@ export default function Register() {
                             <input
                               type="text"
                               value={link.customTitle}
-                              onChange={(e) => handleLinkChange(index, 'customTitle', e.target.value)}
+                              onChange={(e) =>
+                                handleLinkChange(
+                                  index,
+                                  "customTitle",
+                                  e.target.value
+                                )
+                              }
                               className="block w-full bg-gray-600 border border-gray-500 rounded-md text-white px-3 py-2"
                               placeholder="Enter custom link title"
                             />
@@ -411,12 +455,18 @@ export default function Register() {
 
                       {link.platform && (
                         <p className="text-xs text-gray-400 mt-2">
-                          {link.platform === 'whatsapp' && "Enter your phone number with country code (e.g., '1' for US)"}
-                          {link.platform === 'instagram' && "Just enter your username without '@' or URL"}
-                          {link.platform === 'twitter' && "Enter your username with or without '@'"}
-                          {link.platform === 'linkedin' && "Enter your profile URL or username"}
-                          {link.platform === 'website' && "Enter the complete URL"}
-                          {link.platform === 'email' && "Enter your email address"}
+                          {link.platform === "whatsapp" &&
+                            "Enter your phone number with country code (e.g., '1' for US)"}
+                          {link.platform === "instagram" &&
+                            "Just enter your username without '@' or URL"}
+                          {link.platform === "twitter" &&
+                            "Enter your username with or without '@'"}
+                          {link.platform === "linkedin" &&
+                            "Enter your profile URL or username"}
+                          {link.platform === "website" &&
+                            "Enter the complete URL"}
+                          {link.platform === "email" &&
+                            "Enter your email address"}
                         </p>
                       )}
                     </div>
@@ -436,10 +486,10 @@ export default function Register() {
                     type="submit"
                     disabled={loading}
                     className={`flex-1 flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                      loading ? 'opacity-50 cursor-not-allowed' : ''
+                      loading ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
-                    {loading ? 'Creating account...' : 'Create account'}
+                    {loading ? "Creating account..." : "Create account"}
                   </button>
                 </div>
               </form>
