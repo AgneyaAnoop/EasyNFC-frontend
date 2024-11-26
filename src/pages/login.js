@@ -22,7 +22,12 @@ export default function Login() {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
         email,
         password
-      });
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json' }
+        }
+    );
 
       // Store the token in localStorage
       localStorage.setItem('token', response.data.token);

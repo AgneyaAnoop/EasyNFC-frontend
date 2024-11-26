@@ -31,7 +31,14 @@ const ProfilePage = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/public/${slug}`);
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/profile/public/${slug}`,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
         setProfile(response.data);
         setLoading(false);
       } catch (err) {

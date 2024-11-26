@@ -42,7 +42,10 @@ export default function Dashboard() {
       }
 
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/all`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       setProfiles(response.data.profiles);
@@ -66,7 +69,10 @@ export default function Dashboard() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/profile/switch`,
         { profileIndex: index },
         {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         }
       );
       setActiveProfile(index);
