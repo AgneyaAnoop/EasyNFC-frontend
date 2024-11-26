@@ -29,9 +29,7 @@ export default function Dashboard() {
   const [copiedSlug, setCopiedSlug] = useState('');
   const [activeProfile, setActiveProfile] = useState(null);
 
-  useEffect(() => {
-    fetchProfiles();
-  }, [fetchProfiles]); 
+  
 
   const fetchProfiles = useCallback(async () => {
     try {
@@ -61,6 +59,10 @@ export default function Dashboard() {
       }
     }
   }, [router]);
+
+  useEffect(() => {
+    fetchProfiles();
+  }, [fetchProfiles]); 
 
   const switchProfile = async (index) => {
     try {
