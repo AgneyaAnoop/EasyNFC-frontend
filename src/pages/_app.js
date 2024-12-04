@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   
   // List of routes that don't need the header
-  const noHeaderRoutes = ['/', '/login', '/register'];
+  const noHeaderRoutes = ['/', '/login', '/register', '/[slug]'];
   
   // Check if current route should have header
   const shouldShowHeader = !noHeaderRoutes.includes(router.pathname);

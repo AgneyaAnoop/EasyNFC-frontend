@@ -148,7 +148,7 @@ export default function Home() {
       <footer className="bg-gray-900 border-t border-gray-800">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} EasyNFC. All rights reserved.
+            &copy; {new Date().getFullYear()} EasyNFC.
           </p>
         </div>
       </footer>
